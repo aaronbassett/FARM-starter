@@ -36,7 +36,11 @@ function App() {
     const timelineItems = tasks.reverse().map((task) => {
       return task.completed ? (
         <Timeline.Item
-          dot={<CheckCircleOutlined />}
+          dot={
+            <CheckCircleOutlined
+              onClick={() => changeTaskStatus(task._id, false)}
+            />
+          }
           color="green"
           style={{ textDecoration: "line-through", color: "green" }}
         >
@@ -44,7 +48,11 @@ function App() {
         </Timeline.Item>
       ) : (
         <Timeline.Item
-          dot={<MinusCircleOutlined />}
+          dot={
+            <MinusCircleOutlined
+              onClick={() => changeTaskStatus(task._id, true)}
+            />
+          }
           color="blue"
           style={{ textDecoration: "initial" }}
         >
@@ -69,6 +77,18 @@ function App() {
         }),
       })
     }
+  }
+
+  const changeTaskStatus = async (taskId, status) => {
+    await fetch(`/task/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        completed: status,
+      }),
+    })
   }
 
   return (
