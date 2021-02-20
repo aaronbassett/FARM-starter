@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from apps.todo.routers import router as todo_router
 from config import settings
 
 app = FastAPI()
@@ -17,6 +18,8 @@ async def startup_db_client():
 async def shutdown_db_client():
     app.mongodb_client.close()
 
+
+app.include_router(todo_router, tags=["tasks"], prefix="/task")
 
 if __name__ == "__main__":
     uvicorn.run(
