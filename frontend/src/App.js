@@ -1,7 +1,11 @@
 import "./App.css"
 
 import { Button, Col, Divider, Form, Input, Row, Timeline } from "antd"
-import { CheckCircleOutlined, MinusCircleOutlined } from "@ant-design/icons"
+import {
+  CheckCircleOutlined,
+  DeleteOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons"
 import { useEffect, useState } from "react"
 
 function App() {
@@ -44,7 +48,11 @@ function App() {
           color="green"
           style={{ textDecoration: "line-through", color: "green" }}
         >
-          {task.name} <small>({task._id})</small>
+          {task.name} <small>({task._id})</small>{" "}
+          <DeleteOutlined
+            style={{ color: "red" }}
+            onClick={() => deleteTask(task._id)}
+          />
         </Timeline.Item>
       ) : (
         <Timeline.Item
@@ -56,7 +64,11 @@ function App() {
           color="blue"
           style={{ textDecoration: "initial" }}
         >
-          {task.name} <small>({task._id})</small>
+          {task.name} <small>({task._id})</small>{" "}
+          <DeleteOutlined
+            style={{ color: "red" }}
+            onClick={() => deleteTask(task._id)}
+          />
         </Timeline.Item>
       )
     })
@@ -88,6 +100,12 @@ function App() {
       body: JSON.stringify({
         completed: status,
       }),
+    })
+  }
+
+  const deleteTask = async (taskId) => {
+    await fetch(`/task/${taskId}`, {
+      method: "DELETE",
     })
   }
 
